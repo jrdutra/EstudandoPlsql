@@ -121,4 +121,132 @@ END;
     	- TIMESTAMP
     	- Outros
 2. Cursores
-	
+	- Cursores explicitos são espaços em memória onde você pode guardar o resultado de um consulta e iterar sobre esse resultado.
+
+### Estruturas de Controle
+1. Estruturas Condicionais
+	- IF-THEN-ELSE
+    - CASE-WHEN
+2. Estruturas de Iteração
+	- LOOP
+    - WHILE-LOOP
+    - FOR-LOOP
+3. Estruturas de Sequência
+	- GOTO
+    - NULL
+
+#### Exemplo de intregração da linguagem PL/SQL com o banco
+
+```
+SET SERVEROUTPUT ON
+DECLARE
+	vtotalquant number;
+BEGIN
+	SELECT sum(quantidade) INTO vtotalquant
+    FROM TB_ITENS_PEDIDO;
+    CASE
+        WHEN vtotalquant <=200 THEN
+            DBMS_OUTPUT.PUT_line ('O estoque está proximo do minimo' || vtotalquant);
+        WHEN vtotalquant <=300 THEN
+            DBMS_OUTPUT.PUT_line ('O estoque está completo' || vtotalquant);
+        ELSE
+            DBMS_OUTPUT.PUT_line ('O estoque está em excesso' || vtotalquant);
+	END CASE;
+END;
+```
+
+#### O comando nvl
+Esse comando funciona como o ? do javascript. Ele testa se um campo é nulo, caso não nulo, ele retorna o campo, caso nulo ele retornar um valor default.
+
+**Uso**
+```
+variavel := nvl(variavel_teste, variável_default);
+```
+
+## Cursores
+1. Cursores Implicitos
+	- Todo comando SQL
+	- SQL%FOUND
+	- SQL%NOTFOUND
+	- SQL%ROWCOUNT
+2. Cursores Explicitos
+	- Necessários em consultas com +1 registro
+    - OPEN..FETCH..CLOSE
+    - FOR
+    - FOR UPDATE
+    - WHERE CURRENT
+
+**Declaração dinâmica de variáveis com TYPE:**
+```
+DECLARE
+	vid_autor TB_AUTOR.id_autor%TYPE;
+```
+No código acima, estamos declarando uma variável com o tipo que está especificado no banco, lembrando que estamos trabalhando com a tabela TB_AUTOR.
+
+**Declaração dinâmica de variáveis com ROWTYPE:**
+```
+DECLARE
+	vregautor TB_AUTOR%ROWTYPE;
+```
+
+Com o ROWTYPE, no lugar de eu pegar apenas uma variável da tabela, eu pego todas as variáveis da tabela e atribuo a um vetor, onde posteriormente ue posso usar da seguitne forma:
+
+```
+SELECT
+	nome, sexo
+INTO
+	vregautor.nome,
+    vregautor.sexo
+```
+
+**O cursos implícito NOTFOUND**
+```
+SET serveroutput ON
+BEGIN
+
+UPDATE
+	TB_LIVRO
+SET preco = preco * 1.05
+WHERE
+preco > 10;
+
+IF (SQL%NOTFOUND) THEN
+	DBMS_OUTPUT.PUT_LINE('Não Houve livro reajustado!!!');
+ELSE
+	DBMS_OUTPUT.PUT_LINE('A quantidade de livros reajustados foi de: ' || SQL%ROWCOUNT);
+END IF;
+
+END;
+```
+
+**Exemplo de código com curso explicito**
+
+```
+SET serveroutput ON
+
+DECLARE
+
+vreglivros TB_LIVRO%ROWTYPE;
+
+CURSOR clivros IS
+	SELECT
+    	L.*
+    FROM
+    	TB_LIVRO L
+    JOIN
+    	TB_EDITORA E ON (L.id_editora = E.id_editora)
+    WHERE
+    	UPPER(E.descricao) = 'CAMPUS';
+
+BEGIN
+OPEN clivros;
+LOOP
+	FETCH clivros INTO vreglivros;
+    EXIT WHEN clivros%NOTFOUND;
+    DBMS_OUTPUT.PUT_LINE('Título e preço dos livros: ' || vreglivros.titulo || ' , ' ||vreglivros.preco);
+END LOOP;
+CLOSE clivros;
+END;
+    
+
+```
