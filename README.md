@@ -279,3 +279,10 @@ FOR vreglivros IN (
     	DBMS_OUTPUT.PUT_LINE('Título e preço dos livros: ' || vreglivros.titulo || ' , ' ||vreglivros.preco);
     END LOOP;
 ```
+
+O PL/SQL Também permite o tratamento de Exceções.
+
+#### Procedures e Funçoes
+
+A diferença de uma procedures para uma fução é que a procedure você não retorna valor.
+
