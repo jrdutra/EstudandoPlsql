@@ -250,3 +250,32 @@ END;
     
 
 ```
+
+O mesmo exemplo acima pode ser implementado com um FOR:
+```
+BEGIN
+	FOR vreglivros IN clivros
+    LOOP
+    	DBMS_OUTPUT.PUT_LINE('Título e preço dos livros: ' || vreglivros.titulo || ' , ' ||vreglivros.preco);
+    END LOOP;
+END;
+```
+
+Existe uma outra forma de implementar esse tipo de cursor:
+
+```
+BEGIN
+FOR vreglivros IN (
+	SELECT
+    	L.*
+    FROM
+    	TB_LIVRO L
+    JOIN
+    	TB_EDITORA E ON (L.id_editora = E.id_editora)
+    WHERE
+    	UPPER(E.descricao) = 'CAMPUS';
+)
+ LOOP
+    	DBMS_OUTPUT.PUT_LINE('Título e preço dos livros: ' || vreglivros.titulo || ' , ' ||vreglivros.preco);
+    END LOOP;
+```
