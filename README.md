@@ -63,3 +63,62 @@ ALTER USER aluno IDENTIFIED BY treinamento;
 ```plsql
 GRANT DBA TO aluno;
 ```
+
+## Trabalhando com o PLSQL
+
+#### Bloco anônimo:
+
+- DECLARE -- declaração de variáveis locais
+- BEGIN -- Comandos PL/SQL -- Lógica
+- EXCEPTION -- Tratamento de exceções
+- END;
+
+#### Exemplo de código:
+
+```
+SET SERVER ON
+DECLARE
+
+	vsalario number;
+    vpercaumento number;
+    vtotalsal number;
+    
+BEGIN
+
+	vsalario := 2500.00;
+    vpercaumento := 30/100;
+    vtotalsal := vsalario + (vsalario*vpercaumento);
+    DBMS_OUTPUT.PUT_line (' O novo salario é de: ' || vtotalsal);
+    
+END;
+```
+
+#### Tipos de dados:
+
+1. Escalares
+	- Numérico (Number)
+    	- INTEGER
+        - SMALLINT
+        - DECIMAL
+        - NUMERIC
+        - REAL
+        - DOUBLE PRECISION
+        - Outros
+    - Alfanuméricos (String)
+    	- CHAR
+    	- NCHAR
+    	- VARCHAR
+    	- NVARCHAR
+    	- VARCHAR2
+    	- ROWID
+    	- UROWID
+    	- Outros
+    - Booleano
+    	- BOOLEAN
+    	- (OBS: Não é permitido a criação de atributos em banco de dados do tipo boolean. Só é aceito em variáveis e constantes no PL/SQL)
+    - Data e Hora
+    	- DATE
+    	- TIMESTAMP
+    	- Outros
+2. Cursores
+	
