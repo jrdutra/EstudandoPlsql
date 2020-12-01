@@ -58,4 +58,8 @@ TEMPORARY TABLESPACE Temp;
 ALTER USER aluno IDENTIFIED BY treinamento;
 ```
 
-
+**Concedendo privilégios ao usuário**
+(*Concedendo privilégio de DBA para o aluno*)
+```plsql
+GRANT DBA TO aluno;
+```
