@@ -38,3 +38,24 @@ Por exeplo:
 ```plsql
 GRANT Index, Insert, Update, Delete, Select ON tabela1 to usuario1;
 ```
+
+## Criando um usuário
+
+O banco tem por padrão o usuário SYS e o usuário SYSTEM. Uninicialmente são esses usuários utilizados para a criação dos demais usuários.
+
+**Comando para criar usuário:**
+
+```plsql
+CREATE USER aluno
+identified by aluno
+DEFAULT TABLESPACE Users
+TEMPORARY TABLESPACE Temp;
+```
+
+**Comando para alterar a senha do usuário**
+
+```plsql
+ALTER USER aluno IDENTIFIED BY treinamento;
+```
+
+
